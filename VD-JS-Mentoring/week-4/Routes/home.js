@@ -14,6 +14,10 @@ home.use(async (ctx, next) => {
   await next();
 });
 
+home.get('/', async (ctx) => {
+  await ctx.render('admin', { name: 'hello world' });
+});
+
 home.post('file', async (ctx) => {
   if (!ctx.request.files || !ctx.request.files.file) {
     ctx.throw(401, 'bad request');

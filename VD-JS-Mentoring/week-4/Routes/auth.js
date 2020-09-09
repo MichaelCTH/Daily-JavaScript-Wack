@@ -13,7 +13,7 @@ auth.post('register', async (ctx) => {
   return passport.authenticate('local', (err, user) => {
     if (user) {
       ctx.login(user);
-      ctx.redirect('/status.html');
+      ctx.redirect('/');
     } else {
       ctx.redirect('/register.html');
     }
@@ -24,14 +24,14 @@ auth.get('login', async (ctx) => {
   if (!ctx.isAuthenticated()) {
     ctx.redirect('/login.html');
   } else {
-    ctx.redirect('/status.html');
+    ctx.redirect('/');
   }
 });
 
 auth.post('login', async (ctx) => passport.authenticate('local', (err, user) => {
   if (user) {
     ctx.login(user);
-    ctx.redirect('/status.html');
+    ctx.redirect('/');
   } else {
     ctx.redirect('/register.html');
   }

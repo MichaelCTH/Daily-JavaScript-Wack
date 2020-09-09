@@ -5,6 +5,7 @@ const path = require('path');
 const koaBody = require('koa-body');
 const session = require('koa-session');
 const passport = require('koa-passport');
+const render = require('koa-ejs');
 
 const router = require('./router');
 
@@ -21,6 +22,15 @@ app.use(koaBody({ multipart: true }));
 // auth
 app.use(passport.initialize());
 app.use(passport.session());
+
+// EJS
+render(app, {
+  root: path.join(__dirname, 'view'),
+  layout: 'template',
+  viewExt: 'html',
+  cache: false,
+  debug: true,
+});
 
 // Routing
 app.use(router.routes()).use(router.allowedMethods());
