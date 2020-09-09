@@ -4,7 +4,7 @@ const { addUser } = require('../auth');
 
 const auth = new Router();
 
-auth.get('register', (ctx) => {
+auth.get('register', async (ctx) => {
   ctx.redirect('/register.html');
 });
 
@@ -20,7 +20,7 @@ auth.post('register', async (ctx) => {
   })(ctx);
 });
 
-auth.get('login', (ctx) => {
+auth.get('login', async (ctx) => {
   if (!ctx.isAuthenticated()) {
     ctx.redirect('/login.html');
   } else {

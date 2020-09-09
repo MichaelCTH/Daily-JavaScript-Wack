@@ -4,8 +4,8 @@ const serve = require('koa-static');
 const path = require('path');
 const koaBody = require('koa-body');
 const session = require('koa-session');
-
 const passport = require('koa-passport');
+
 const router = require('./router');
 
 const app = new Koa();
@@ -25,6 +25,11 @@ app.use(passport.session());
 // Routing
 app.use(router.routes()).use(router.allowedMethods());
 app.use(serve(path.join(__dirname, '/public')));
+
+// handle rests
+app.use(async (ctx) => {
+  ctx.redirect('/404.html');
+});
 
 // HTTP Server
 const server = http.createServer(app.callback());

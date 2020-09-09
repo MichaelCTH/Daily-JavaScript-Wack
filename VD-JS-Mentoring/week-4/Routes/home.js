@@ -6,17 +6,18 @@ const { stat } = require('../utility/util');
 const { extname } = path;
 const home = new Router();
 
-home.use((ctx, next) => {
-  if (ctx.isAuthenticated()) {
-    next();
+home.use(async (ctx, next) => {
+  if (!ctx.isAuthenticated()) {
+    ctx.redirect('/login.html');
     return;
   }
-  ctx.redirect('/login.html');
+  await next();
 });
 
 home.post('file', async (ctx) => {
   if (!ctx.request.files || !ctx.request.files.file) {
     ctx.throw(401, 'bad request');
+    return;
   }
 
   const { file } = ctx.request.files;
@@ -27,7 +28,7 @@ home.post('file', async (ctx) => {
   ctx.redirect('/index.html');
 });
 
-home.param('filename', (name, ctx, next) => {
+home.param('filename', async (name, ctx, next) => {
   ctx.filename = name;
   return next();
 });
@@ -40,8 +41,11 @@ home.get('file/:filename', async (ctx) => {
     if (fstat.isFile()) {
       ctx.type = extname(filePath);
       ctx.body = fs.createReadStream(filePath);
+      return;
     }
+    ctx.redirect('/404.html');
   } catch (e) {
+    console.log(e);
     ctx.redirect('/404.html');
   }
 });
