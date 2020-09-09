@@ -8,17 +8,17 @@ const session = require('koa-session');
 const passport = require('koa-passport');
 const router = require('./router');
 
-const PORT = 3000;
-
 const app = new Koa();
-
-app.use(koaBody({ multipart: true }));
+const PORT = process.env.PORT || 3000;
 
 // Sessions
 app.keys = ['my_secret'];
 app.use(session({}, app));
 
-// Passport
+// body parser
+app.use(koaBody({ multipart: true }));
+
+// auth
 app.use(passport.initialize());
 app.use(passport.session());
 

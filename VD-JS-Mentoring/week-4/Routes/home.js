@@ -6,20 +6,12 @@ const { stat } = require('../utility/util');
 const { extname } = path;
 const home = new Router();
 
-home.post('login', (ctx) => {
-  ctx.body = 'post login';
-});
-
-home.get('login', (ctx) => {
-  ctx.body = 'get login';
-});
-
 home.use((ctx, next) => {
   if (ctx.isAuthenticated()) {
     next();
     return;
   }
-  ctx.redirect('/404.html');
+  ctx.redirect('/login.html');
 });
 
 home.post('file', async (ctx) => {
@@ -50,7 +42,6 @@ home.get('file/:filename', async (ctx) => {
       ctx.body = fs.createReadStream(filePath);
     }
   } catch (e) {
-    console.log(e);
     ctx.redirect('/404.html');
   }
 });

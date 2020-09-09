@@ -1,36 +1,34 @@
 const passport = require('koa-passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const fetchUser = (() => {
-  const user = { id: 1, username: 'test', password: 'test' };
-  return async function () {
-    return user;
-  };
-})();
+const userList = [];
+
+module.exports.addUser = (username, password) => {
+  userList.push({ username, password });
+};
+
+const fetchUser = (username) => userList.filter((i) => i.username === username)[0];
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.username);
 });
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await fetchUser();
+passport.deserializeUser(async (username, done) => {
+  const user = await fetchUser(username);
+  if (user) {
     done(null, user);
-  } catch (err) {
-    done(err);
+  } else {
+    done(null, false);
   }
 });
 
 passport.use(new LocalStrategy((username, password, done) => {
-  fetchUser()
-    .then((user) => {
-      if (username === user.username && password === user.password) {
-        done(null, user);
-      } else {
-        done(null, false);
-      }
-    })
-    .catch((err) => done(err));
+  const user = fetchUser(username);
+  if (username === user.username && password === user.password) {
+    done(null, user);
+  } else {
+    done(null, false);
+  }
 }));
 
 // const FacebookStrategy = require('passport-facebook').Strategy;
@@ -39,30 +37,6 @@ passport.use(new LocalStrategy((username, password, done) => {
 //   clientID: 'your-client-id',
 //   clientSecret: 'your-secret',
 //   callbackURL: `http://localhost:${process.env.PORT || 3000}/auth/facebook/callback`,
-// },
-// ((token, tokenSecret, profile, done) => {
-//   // retrieve user ...
-//   fetchUser().then((user) => done(null, user));
-// })));
-
-// const TwitterStrategy = require('passport-twitter').Strategy;
-
-// passport.use(new TwitterStrategy({
-//   consumerKey: 'your-consumer-key',
-//   consumerSecret: 'your-secret',
-//   callbackURL: `http://localhost:${process.env.PORT || 3000}/auth/twitter/callback`,
-// },
-// ((token, tokenSecret, profile, done) => {
-//   // retrieve user ...
-//   fetchUser().then((user) => done(null, user));
-// })));
-
-// const GoogleStrategy = require('passport-google-auth').Strategy;
-
-// passport.use(new GoogleStrategy({
-//   clientId: 'your-client-id',
-//   clientSecret: 'your-secret',
-//   callbackURL: `http://localhost:${process.env.PORT || 3000}/auth/google/callback`,
 // },
 // ((token, tokenSecret, profile, done) => {
 //   // retrieve user ...
