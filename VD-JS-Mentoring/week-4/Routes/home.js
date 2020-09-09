@@ -1,35 +1,43 @@
 const Router = require('koa-router');
 const fs = require('fs');
 const path = require('path');
-const { stat } = require('../utility/util');
+const { stat, listFiles } = require('../utility/util');
 
 const { extname } = path;
 const home = new Router();
 
 home.use(async (ctx, next) => {
   if (!ctx.isAuthenticated()) {
-    ctx.redirect('/login.html');
+    await ctx.render('login');
     return;
   }
   await next();
 });
 
 home.get('/', async (ctx) => {
-  await ctx.render('admin', { name: 'hello world' });
+  const files = listFiles(path.join(__dirname, '../public/files'));
+  await ctx.render('admin', { files });
 });
 
 home.post('file', async (ctx) => {
   if (!ctx.request.files || !ctx.request.files.file) {
-    ctx.throw(401, 'bad request');
+    ctx.redirect('/');
     return;
   }
-
   const { file } = ctx.request.files;
+  if (file.size === 0) {
+    ctx.redirect('/');
+    return;
+  }
   const reader = fs.createReadStream(file.path);
-  const stream = fs.createWriteStream(path.join('public/files', `${Math.random().toString().substr(2, 6)}_${file.name}`));
+  const stream = fs.createWriteStream(
+    path.join(
+      'public/files',
+      `${Math.random().toString().substr(2, 6)}_${file.name}`,
+    ),
+  );
   reader.pipe(stream);
-
-  ctx.redirect('/index.html');
+  ctx.redirect('/');
 });
 
 home.param('filename', async (name, ctx, next) => {
@@ -49,7 +57,6 @@ home.get('file/:filename', async (ctx) => {
     }
     ctx.redirect('/404.html');
   } catch (e) {
-    console.log(e);
     ctx.redirect('/404.html');
   }
 });
