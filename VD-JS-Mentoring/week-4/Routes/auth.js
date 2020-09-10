@@ -46,4 +46,14 @@ auth.get('logout', async (ctx) => {
   }
 });
 
+auth.get('github', async (ctx) => passport.authenticate('github', { scope: ['user:email'] }, (err, user) => {
+  ctx.login(user);
+  ctx.redirect('/');
+})(ctx));
+
+auth.get('github/callback', async (ctx) => passport.authenticate('github', { failureRedirect: '/auth/login' }, (err, user) => {
+  ctx.login(user);
+  ctx.redirect('/');
+})(ctx));
+
 module.exports = auth;

@@ -6,6 +6,7 @@ const koaBody = require('koa-body');
 const session = require('koa-session');
 const passport = require('koa-passport');
 const render = require('koa-ejs');
+require('dotenv').config();
 
 const router = require('./router');
 
