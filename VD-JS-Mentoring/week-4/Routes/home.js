@@ -24,19 +24,23 @@ home.post('file', async (ctx) => {
     ctx.redirect('/');
     return;
   }
-  const { file } = ctx.request.files;
-  if (file.size === 0) {
+  const { files } = ctx.request;
+  if (files.file.length === 0) {
     ctx.redirect('/');
     return;
   }
-  const reader = fs.createReadStream(file.path);
-  const stream = fs.createWriteStream(
-    path.join(
-      'public/files',
-      `${Math.random().toString().substr(2, 6)}_${file.name}`,
-    ),
-  );
-  reader.pipe(stream);
+
+  files.file.forEach((file) => {
+    const reader = fs.createReadStream(file.path);
+    const stream = fs.createWriteStream(
+      path.join(
+        'public/files',
+        `${Math.random().toString().substr(2, 6)}_${file.name}`,
+      ),
+    );
+    reader.pipe(stream);
+  });
+
   ctx.redirect('/');
 });
 
