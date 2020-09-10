@@ -33,14 +33,14 @@ auth.post('login', async (ctx) => passport.authenticate('local', async (err, use
     ctx.login(user);
     ctx.redirect('/');
   } else {
-    await ctx.render('register');
+    await ctx.render('login');
   }
 })(ctx));
 
 auth.get('logout', async (ctx) => {
   if (ctx.isAuthenticated()) {
     ctx.logout();
-    await ctx.render('login');
+    ctx.redirect('/');
   } else {
     ctx.redirect('/404.html');
   }
