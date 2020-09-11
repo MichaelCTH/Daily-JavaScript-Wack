@@ -16,7 +16,9 @@ module.exports.listFiles = (folder) => {
   return files.map((f) => {
     const stat = fs.statSync(path.join(folder, f));
     return {
-      name: f, createdDate: new Date(stat.atime).toLocaleString(), size: stat.size,
+      name: f,
+      createdDate: new Date(stat.atime).toLocaleString(),
+      size: stat.size,
     };
   });
 };
