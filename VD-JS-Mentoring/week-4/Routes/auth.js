@@ -9,7 +9,7 @@ auth.get('register', async (ctx) => {
 });
 
 auth.post('register', async (ctx) => {
-  addUser(ctx.request.body.username, ctx.request.body.password);
+  await addUser(ctx.request.body.username, ctx.request.body.password);
   return passport.authenticate('local', async (err, user) => {
     if (user) {
       ctx.login(user);
