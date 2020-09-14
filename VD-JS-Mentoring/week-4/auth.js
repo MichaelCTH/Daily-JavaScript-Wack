@@ -7,7 +7,10 @@ module.exports.addUser = async (username, password) => {
   await set(username, JSON.stringify({ username, password, githubId: '' }));
 };
 
-const fetchUser = async (username) => get(username);
+const fetchUser = async (username) => {
+  const res = await get(username);
+  return JSON.parse(res);
+};
 
 passport.serializeUser((user, done) => {
   done(null, user.username);

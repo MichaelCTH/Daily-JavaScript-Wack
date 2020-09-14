@@ -27,7 +27,7 @@ module.exports.get = (key) => new Promise((resolve, reject) => {
       reject(err);
       return;
     }
-    resolve({ username: key, password: reply });
+    resolve(reply);
   });
 });
 
