@@ -104,7 +104,7 @@
       <div class="modal-body">
         <p>Try uploading multiple files at a time.</p>
         <form action="/file" method="post" enctype="multipart/form-data">
-          <input type="file" name="file" multiple />
+          <input type="file" name="file" multiple required />
           <div class="modal-footer" style="margin-top: 2rem">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Upload</button>

@@ -1,7 +1,8 @@
 const Router = require('koa-router');
 const fs = require('fs');
 const path = require('path');
-const { stat, listFiles } = require('../utility/util');
+const { stat } = require('../utility/util');
+const { set } = require('../db');
 
 const { extname } = path;
 const home = new Router();
@@ -15,7 +16,7 @@ home.use(async (ctx, next) => {
 });
 
 home.get('/', async (ctx) => {
-  const files = listFiles(path.join(__dirname, '../public/files'));
+  const files = ctx.state.user.files || [];
   await ctx.render('admin', { files });
 });
 
@@ -29,16 +30,24 @@ home.post('file', async (ctx) => {
     ctx.redirect('/');
     return;
   }
-
-  files.file.forEach((file) => {
-    const reader = fs.createReadStream(file.path);
-    const stream = fs.createWriteStream(
-      path.join(
-        'public/files',
-        `${Math.random().toString().substr(2, 6)}_${file.name}`,
-      ),
+  const { user } = ctx.state;
+  if (!Array.isArray(files.file)) { files.file = [files.file]; }
+  await files.file.forEach(async (file) => {
+    const destPath = path.join(
+      'public/files',
+      `${Math.random().toString().substr(2, 6)}_${file.name}`,
     );
+
+    const reader = fs.createReadStream(file.path);
+    const stream = fs.createWriteStream(destPath);
     reader.pipe(stream);
+    if (!user.files) { user.files = []; }
+    user.files = [...user.files, {
+      name: destPath,
+      createdDate: (new Date()).toLocaleDateString(),
+      size: file.size,
+    }];
+    await set(user.username, JSON.stringify(user));
   });
 
   ctx.redirect('/');
