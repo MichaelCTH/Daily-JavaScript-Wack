@@ -1,12 +1,17 @@
 import React from 'react';
 import { Layout } from 'antd';
+import { MenuBar } from './MenuBar';
+import { SiteFooter } from './Footer';
+import { LoginForm } from './LoginForm';
+
+const { Content } = Layout;
 
 export const AppFrame = () => (
   <Layout>
-    <Layout.Header>header</Layout.Header>
-    <Layout>
-      <Layout.Content>main content</Layout.Content>
+    <MenuBar />
+    <Layout style={{ backgroundColor: 'white' }}>
+      <LoginForm />
     </Layout>
-    <Layout.Footer>footer</Layout.Footer>
+    <SiteFooter />
   </Layout>
 );
