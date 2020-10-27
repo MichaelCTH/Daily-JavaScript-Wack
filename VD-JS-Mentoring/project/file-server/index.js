@@ -1,17 +1,14 @@
 const http = require('http');
 const Koa = require('koa');
-const serve = require('koa-static');
-const path = require('path');
 const koaBody = require('koa-body');
 const session = require('koa-session');
 const passport = require('koa-passport');
-const render = require('koa-ejs');
 require('dotenv').config();
-
+const logger = require('./utility/Logger');
 const router = require('./router');
 
 const app = new Koa();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.SERVER_PORT || 3000;
 
 // Sessions
 app.keys = ['my_secret'];
@@ -24,26 +21,16 @@ app.use(koaBody({ multipart: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// EJS
-render(app, {
-  root: path.join(__dirname, 'view'),
-  layout: 'template',
-  viewExt: 'html',
-  cache: false,
-  debug: false,
-});
-
 // Routing
 app.use(router.routes()).use(router.allowedMethods());
-app.use(serve(path.join(__dirname, '/public')));
 
 // handle rests
 app.use(async (ctx) => {
-  ctx.redirect('/404.html');
+  ctx.status = 400;
 });
 
 // HTTP Server
 const server = http.createServer(app.callback());
 server.listen(PORT, () => {
-  console.log(`Server is running at port::${PORT}`);
+  logger.info(`Server is running at port::${PORT}`);
 });

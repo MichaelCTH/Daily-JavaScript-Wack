@@ -9,25 +9,25 @@ const home = new Router();
 
 home.use(async (ctx, next) => {
   if (!ctx.isAuthenticated()) {
-    await ctx.render('login');
+    ctx.status = 401;
     return;
   }
   await next();
 });
 
-home.get('/', async (ctx) => {
+home.get('file', async (ctx) => {
   const files = ctx.state.user.files || [];
-  await ctx.render('admin', { files });
+  ctx.body = { success: true, data: { files } };
 });
 
 home.post('file', async (ctx) => {
   if (!ctx.request.files || !ctx.request.files.file) {
-    ctx.redirect('/');
+    ctx.status = 400;
     return;
   }
   const { files } = ctx.request;
   if (files.file.length === 0) {
-    ctx.redirect('/');
+    ctx.status = 400;
     return;
   }
   const { user } = ctx.state;
@@ -50,7 +50,7 @@ home.post('file', async (ctx) => {
     await set(user.username, JSON.stringify(user));
   });
 
-  ctx.redirect('/');
+  ctx.body = { success: true };
 });
 
 home.param('filename', async (name, ctx, next) => {
@@ -68,9 +68,9 @@ home.get('file/:filename', async (ctx) => {
       ctx.body = fs.createReadStream(filePath);
       return;
     }
-    ctx.redirect('/404.html');
+    ctx.body = 404;
   } catch (e) {
-    ctx.redirect('/404.html');
+    ctx.body = 404;
   }
 });
 

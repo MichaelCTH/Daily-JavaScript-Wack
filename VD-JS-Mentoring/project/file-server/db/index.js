@@ -1,14 +1,18 @@
 const redis = require('redis');
+const logger = require('../utility/Logger');
 
-const client = redis.createClient({ host: '127.0.0.1', port: 6379 });
-client.auth('example', (err, reply) => {
+const host = process.env.DB_HOST || '127.0.0.1';
+const port = process.env.DB_PORT || 6379;
+
+const client = redis.createClient({ host, port });
+client.auth('example', (err) => {
   if (err) {
-    console.error(err);
+    logger.error(err);
   }
 });
 
 client.on('error', (error) => {
-  console.error(error);
+  logger.error(error);
 });
 
 module.exports.set = (key, value) => new Promise((resolve, reject) => {

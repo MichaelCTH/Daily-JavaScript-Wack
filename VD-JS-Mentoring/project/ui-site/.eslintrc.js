@@ -4,7 +4,12 @@ module.exports = {
     es6: true,
     'jest/globals': true,
   },
-  extends: ['airbnb', 'plugin:prettier/recommended'],
+  extends: [
+    'airbnb',
+    'plugin:prettier/recommended',
+    'eslint:recommended',
+    'react-app',
+  ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',

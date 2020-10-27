@@ -3,7 +3,7 @@ import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
-export const LoginForm = () => {
+export const SingupForm = () => {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
   };
@@ -32,7 +32,7 @@ export const LoginForm = () => {
         }}
         onFinish={onFinish}
       >
-        <h2 style={{ color: 'darkgray' }}>Sign In</h2>
+        <h2 style={{ color: 'darkgray' }}>Sign Up</h2>
         <Form.Item
           name="username"
           rules={[
@@ -62,15 +62,16 @@ export const LoginForm = () => {
             placeholder="Password"
           />
         </Form.Item>
+
         <Form.Item>
           <Button
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Log in
+            Sign up
           </Button>{' '}
-          Or <Link to="/signup">register now!</Link>
+          Or <Link to="/login">have an account!</Link>
         </Form.Item>
       </Form>
     </div>
