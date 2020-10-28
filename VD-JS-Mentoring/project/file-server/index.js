@@ -5,10 +5,14 @@ const session = require('koa-session');
 const passport = require('koa-passport');
 require('dotenv').config();
 const logger = require('./utility/Logger');
+const { koaLogger } = require('./utility/koa-logger-winston');
 const router = require('./router');
 
 const app = new Koa();
 const PORT = process.env.SERVER_PORT || 3000;
+
+// Logger
+app.use(koaLogger(logger));
 
 // Sessions
 app.keys = ['my_secret'];
@@ -34,3 +38,5 @@ const server = http.createServer(app.callback());
 server.listen(PORT, () => {
   logger.info(`Server is running at port::${PORT}`);
 });
+
+module.exports = server;

@@ -1,4 +1,4 @@
-const { stat } = require('./util');
+const { stat } = require('../utility/util');
 
 test('stat valid file with 4096 blocks', async () => {
   expect(await stat('ENV_EXAMPLE')).toHaveProperty('blksize',4096);

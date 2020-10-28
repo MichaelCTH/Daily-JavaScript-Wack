@@ -68,9 +68,9 @@ home.get('file/:filename', async (ctx) => {
       ctx.body = fs.createReadStream(filePath);
       return;
     }
-    ctx.body = 404;
+    ctx.status = 404;
   } catch (e) {
-    ctx.body = 404;
+    ctx.status = 404;
   }
 });
 
