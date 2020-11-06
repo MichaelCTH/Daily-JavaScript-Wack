@@ -1,7 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 export const SignupForm = () => {
+  const history = useHistory();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onRegister = () => {
+    if (!username || !password) {
+      return;
+    }
+
+    fetch('http://localhost:4000/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      mode: 'no-cors',
+    })
+      .then((res) => {
+        history.push('http://localhost:3000');
+      })
+      .catch(console.log);
+  };
+
   return (
     <div
       style={{
@@ -20,12 +41,20 @@ export const SignupForm = () => {
     >
       <h2>Sign Up</h2>
       <div>
-        <span>Email</span>
-        <input type="text" />
+        <span>Username</span>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
       </div>
       <div>
         <span>Password</span>
-        <input type="password" />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
       <div
         style={{
@@ -37,6 +66,7 @@ export const SignupForm = () => {
           padding: '0.5rem 1rem',
           boxSizing: 'border-box',
         }}
+        onClick={onRegister}
       >
         Register
       </div>

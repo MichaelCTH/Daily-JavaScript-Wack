@@ -75,8 +75,6 @@ export const LoginForm = () => {
           boxSizing: 'border-box',
         }}
         onClick={onSign}
-        role="button"
-        tabIndex={0}
       >
         Login
       </div>
@@ -91,8 +89,6 @@ export const LoginForm = () => {
           boxSizing: 'border-box',
         }}
         onClick={onGithub}
-        role="button"
-        tabIndex={0}
       >
         Github
       </div>
