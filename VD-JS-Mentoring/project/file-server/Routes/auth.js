@@ -1,6 +1,5 @@
 const passport = require('koa-passport');
 const Router = require('koa-router');
-const { Console } = require('winston/lib/winston/transports');
 const { addUser } = require('../auth');
 
 const auth = new Router();
