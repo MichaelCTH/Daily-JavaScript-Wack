@@ -1,8 +1,7 @@
 import React from 'react';
-import './App.css';
-import 'antd/dist/antd.css';
-import { AppFrame } from './components/AppFrame';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AppFrame } from './components/AppFrame';
+import './App.css';
 
 function App() {
   return (

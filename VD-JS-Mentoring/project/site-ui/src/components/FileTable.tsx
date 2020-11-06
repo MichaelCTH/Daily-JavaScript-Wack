@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Table } from 'antd';
 
 const columns = [
   {
@@ -16,8 +15,15 @@ const columns = [
   },
 ];
 
-const data = [];
-for (let i = 0; i < 46; i++) {
+interface FileInfo {
+  key: number;
+  name: string;
+  age: number;
+  address: string;
+}
+
+const data: FileInfo[] = [];
+for (let i = 0; i < 46; i += 1) {
   data.push({
     key: i,
     name: `Edward King ${i}`,
@@ -29,8 +35,8 @@ for (let i = 0; i < 46; i++) {
 export const FileTable = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (selectedRowKeys) => {
-    setSelectedRowKeys(selectedRowKeys);
+  const onSelectChange = (pickedKeys: any) => {
+    setSelectedRowKeys(pickedKeys);
   };
 
   const rowSelection = {
@@ -38,14 +44,5 @@ export const FileTable = () => {
     onChange: onSelectChange,
   };
 
-  return (
-    <div>
-      <Table
-        fixed
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={data}
-      />
-    </div>
-  );
+  return <div />;
 };

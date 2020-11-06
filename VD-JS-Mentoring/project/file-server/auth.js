@@ -37,7 +37,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: 'http://127.0.0.1:3000/auth/github/callback',
+  callbackURL: `http://127.0.0.1:${process.env.SERVER_PORT}/auth/github/callback`,
 },
 (async (accessToken, refreshToken, profile, done) => {
   const user = fetchUser(profile.username);

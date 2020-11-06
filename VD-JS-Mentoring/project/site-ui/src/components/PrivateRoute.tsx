@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-export const PrivateRoute = ({ children, ...rest }) => (
+export const PrivateRoute = ({ children, ...rest }: any) => (
   <Route
     {...rest}
     render={({ location }) =>
-      true ? (
+      false ? (
         children
       ) : (
         <Redirect
