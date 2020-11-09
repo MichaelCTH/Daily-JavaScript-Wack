@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { stat } = require('../utility/util');
 const { set } = require('../db');
+const logger = require('../utility/Logger');
 
 const { extname } = path;
 const home = new Router();
@@ -15,24 +16,26 @@ home.use(async (ctx, next) => {
   await next();
 });
 
+home.get('isAuth',async(ctx)=>{
+  ctx.body = { success: true };
+});
+
 home.get('file', async (ctx) => {
   const files = ctx.state.user.files || [];
   ctx.body = { success: true, data: { files } };
 });
 
 home.post('file', async (ctx) => {
-  if (!ctx.request.files || !ctx.request.files.file) {
+  console.log(JSON.stringify(ctx.request.files))
+  if (!ctx.request.files || !ctx.request.files.files) {
     ctx.status = 400;
     return;
   }
   const { files } = ctx.request;
-  if (files.file.length === 0) {
-    ctx.status = 400;
-    return;
-  }
   const { user } = ctx.state;
-  if (!Array.isArray(files.file)) { files.file = [files.file]; }
-  await files.file.forEach(async (file) => {
+
+  if (!Array.isArray(files.files)) { files.files = [files.files]; }
+  await files.files.forEach(async (file) => {
     const destPath = path.join(
       'public/files',
       `${Math.random().toString().substr(2, 6)}_${file.name}`,

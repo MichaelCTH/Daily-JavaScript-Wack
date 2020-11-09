@@ -7,6 +7,7 @@ require('dotenv').config();
 const logger = require('./utility/Logger');
 const { koaLogger } = require('./utility/koa-logger-winston');
 const router = require('./router');
+const cors = require('koa2-cors');
 
 const app = new Koa();
 const PORT = process.env.SERVER_PORT || 3000;
@@ -20,6 +21,9 @@ app.use(session({}, app));
 
 // body parser
 app.use(koaBody({ multipart: true }));
+
+// cors
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // auth
 app.use(passport.initialize());

@@ -1,6 +1,7 @@
 const passport = require('koa-passport');
 const Router = require('koa-router');
 const { addUser } = require('../auth');
+const logger = require('../utility/Logger');
 
 const auth = new Router();
 
@@ -38,6 +39,7 @@ auth.post('login', async (ctx) => passport.authenticate('local', async (err, use
 })(ctx));
 
 auth.get('logout', async (ctx) => {
+  logger.info(JSON.stringify(ctx.request.headers));
   if (ctx.isAuthenticated()) {
     ctx.logout();
   }

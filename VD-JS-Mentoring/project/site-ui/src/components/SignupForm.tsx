@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-export const SignupForm = () => {
+export const SignupForm = ({ setLogged }: { setLogged: any }) => {
   const history = useHistory();
 
   const [username, setUsername] = useState('');
@@ -12,13 +12,24 @@ export const SignupForm = () => {
       return;
     }
 
+    const data = new FormData();
+    data.append('username', username);
+    data.append('password', password);
     fetch('http://localhost:4000/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ username, password }),
-      mode: 'no-cors',
+      body: data,
+      credentials: 'include',
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Credentials': 'true',
+      },
     })
+      .then((resp) => resp.json())
       .then((res) => {
-        history.push('http://localhost:3000');
+        if (res.success) {
+          setLogged(true);
+          history.push('/');
+        }
       })
       .catch(console.log);
   };
