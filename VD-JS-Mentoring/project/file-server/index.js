@@ -23,7 +23,7 @@ app.use(session({}, app));
 app.use(koaBody({ multipart: true }));
 
 // cors
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'http://127.0.0.1:3000', credentials: true }));
 
 // auth
 app.use(passport.initialize());

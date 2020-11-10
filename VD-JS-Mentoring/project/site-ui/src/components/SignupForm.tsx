@@ -15,12 +15,12 @@ export const SignupForm = ({ setLogged }: { setLogged: any }) => {
     const data = new FormData();
     data.append('username', username);
     data.append('password', password);
-    fetch('http://localhost:4000/auth/register', {
+    fetch('http://127.0.0.1:4000/auth/register', {
       method: 'POST',
       body: data,
       credentials: 'include',
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
         'Access-Control-Allow-Credentials': 'true',
       },
     })

@@ -11,10 +11,10 @@ export const MenuBar = ({
   const history = useHistory();
 
   const logout = () => {
-    fetch('http://localhost:4000/auth/logout', {
+    fetch('http://127.0.0.1:4000/auth/logout', {
       credentials: 'include',
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
         'Access-Control-Allow-Credentials': 'true',
       },
     })

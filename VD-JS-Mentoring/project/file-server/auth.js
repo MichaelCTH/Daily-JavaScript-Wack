@@ -40,9 +40,9 @@ passport.use(new GitHubStrategy({
   callbackURL: `http://127.0.0.1:${process.env.SERVER_PORT}/auth/github/callback`,
 },
 (async (accessToken, refreshToken, profile, done) => {
-  const user = fetchUser(profile.username);
+  const user = await fetchUser(profile.username);
   if (!user) {
     await set(profile.username, JSON.stringify({ username: profile.username, password: '', githubId: profile.id }));
   }
-  done(null, fetchUser(profile.username));
+  done(null, await fetchUser(profile.username));
 })));

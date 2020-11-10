@@ -39,7 +39,6 @@ auth.post('login', async (ctx) => passport.authenticate('local', async (err, use
 })(ctx));
 
 auth.get('logout', async (ctx) => {
-  logger.info(JSON.stringify(ctx.request.headers));
   if (ctx.isAuthenticated()) {
     ctx.logout();
   }
@@ -49,20 +48,11 @@ auth.get('logout', async (ctx) => {
   };
 });
 
-auth.get('github', async (ctx) => passport.authenticate('github', { scope: ['user:email'] }, (err, user) => {
-  ctx.login(user);
-  ctx.body = {
-    message: 'user has successfully authenticated',
-    success: true,
-  };
-})(ctx));
+auth.get('github', async (ctx) => passport.authenticate('github', { scope: ['user:email'] })(ctx));
 
-auth.get('github/callback', async (ctx) => passport.authenticate('github', { failureRedirect: '/auth/login' }, (err, user) => {
+auth.get('github/callback', async (ctx) => passport.authenticate('github', {}, (err, user) => {
   ctx.login(user);
-  ctx.body = {
-    message: 'user has successfully authenticated',
-    success: true,
-  };
+  ctx.redirect('http://127.0.0.1:3000');
 })(ctx));
 
 module.exports = auth;

@@ -7,10 +7,10 @@ export const ClientPanel = () => {
   const [data, setData] = useState([] as FileInfo[]);
 
   const getFiles = () => {
-    fetch('http://localhost:4000/file', {
+    fetch('http://127.0.0.1:4000/file', {
       credentials: 'include',
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
         'Access-Control-Allow-Credentials': 'true',
       },
     })

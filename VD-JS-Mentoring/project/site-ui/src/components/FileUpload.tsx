@@ -7,13 +7,13 @@ export const FileUpload = ({ getFiles }: { getFiles: any }) => {
   const postFile = (files: any) => {
     const formData = new FormData();
     formData.append('files', files[0]);
-    fetch('http://localhost:4000/file', {
+    fetch('http://127.0.0.1:4000/file', {
       method: 'POST',
       body: formData,
       // TODO use interceptor to set it globally
       credentials: 'include',
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': 'http://127.0.0.1:3000',
         'Access-Control-Allow-Credentials': 'true',
       },
     })
